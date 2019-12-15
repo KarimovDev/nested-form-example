@@ -9,6 +9,9 @@ import { BaseControlComponent } from './base-control.component';
       <mat-error *ngIf="form.controls.name.hasError('required')">
         {{ errors.REQUIRED }}
       </mat-error>
+      <mat-error *ngIf="form.controls.name.hasError('nameIncorrect')">
+        Необходимо ввести как минимум фамилию и имя
+      </mat-error>
     </mat-form-field>
   `,
   styles: ['.mat-form-field { width: 100%; margin: 5px 0; }'],

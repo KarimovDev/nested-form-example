@@ -12,6 +12,7 @@ import { BaseControlComponent } from './base-control.component';
         min="0"
         max="100"
         formControlName="childCounter"
+        (keypress)="keyPressed($event)"
         required
       />
       <mat-error *ngIf="form.controls.childCounter.hasError('required')">
@@ -29,4 +30,18 @@ import { BaseControlComponent } from './base-control.component';
   `,
   styles: ['.mat-form-field { width: 100%; margin: 5px 0; }'],
 })
-export class ChildCounterComponent extends BaseControlComponent {}
+export class ChildCounterComponent extends BaseControlComponent {
+  public keyPressed(event: KeyboardEvent) {
+    if (event.key === '+') {
+      event.preventDefault();
+      this.form.patchValue({
+        childCounter: this.form.controls.childCounter.value + 1,
+      });
+    } else if (event.key === '-') {
+      event.preventDefault();
+      this.form.patchValue({
+        childCounter: this.form.controls.childCounter.value - 1,
+      });
+    }
+  }
+}

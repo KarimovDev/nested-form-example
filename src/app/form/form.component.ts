@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { HttpService } from 'app/services/http.service';
 import { calculateAge, maskCallback } from '@nf-shared/helpers';
 import { MaritalStatus, GENDER } from '@nf-shared/models';
+import { NestedFormValidators } from '@nf-shared/validators';
 
 @AutoUnsubscribe()
 @Component({
@@ -54,6 +55,7 @@ export class FormComponent implements OnInit {
       name: new FormControl('', [
         Validators.required,
         // Validators.pattern('[А-Яа-я]*?s[А-Яа-я]*'),
+        NestedFormValidators.isNameFieldCorrect,
       ]),
       gender: new FormControl('', Validators.required),
       date: new FormControl('', Validators.required),
