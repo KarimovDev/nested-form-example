@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RussianLettersMaskPipe, OnlyDigitsMaskPipe } from '@nf-shared/pipes';
 import { AutoUnsubscribe } from '@nf-shared/decorators';
-import { Subscription, timer } from 'rxjs';
+import { Subscription, timer, Observable, BehaviorSubject } from 'rxjs';
 import { StoreService } from '../services/store.service';
 import { Router } from '@angular/router';
 import { HttpService } from 'app/services/http.service';
@@ -17,6 +17,9 @@ import { NestedFormValidators } from '@nf-shared/validators';
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit {
+  private isDisabledSubmitButton: BehaviorSubject<
+    boolean
+  > = new BehaviorSubject(false);
   private formSubscription: Subscription;
   private nameSubscription: Subscription;
   private commentSubscription: Subscription;
@@ -38,7 +41,9 @@ export class FormComponent implements OnInit {
   private bindedMaskCallback = maskCallback.bind(this);
 
   public form: FormGroup;
-  public isDisabledSubmit = false;
+  public isDisabledSubmitButton$: Observable<
+    boolean
+  > = this.isDisabledSubmitButton.asObservable();
   public showStatusControl = false;
   public filteredMaritalStatus = [...this.maritalStatus];
 
@@ -106,9 +111,9 @@ export class FormComponent implements OnInit {
   }
 
   startDelayUndisabling(ms: number) {
-    this.isDisabledSubmit = true;
-    this.delayButtonSubscription = timer(ms).subscribe(
-      result => (this.isDisabledSubmit = false)
+    this.isDisabledSubmitButton.next(true);
+    this.delayButtonSubscription = timer(ms).subscribe(result =>
+      this.isDisabledSubmitButton.next(false)
     );
   }
 

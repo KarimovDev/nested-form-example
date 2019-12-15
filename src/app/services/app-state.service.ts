@@ -32,7 +32,7 @@ export class AppStateService {
       this.pendingRequests--;
       this.checkPending();
     } else {
-      console.error(`host: spinner counter can't be negative`);
+      console.error(`spinner counter can't be negative`);
     }
   }
 }

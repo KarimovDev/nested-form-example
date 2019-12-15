@@ -15,7 +15,7 @@
     mat-stroked-button
     class="btn"
     type="submit"
-    [disabled]="isDisabledSubmit"
+    [disabled]="isDisabledSubmitButton$ | async"
   >
     Сохранить
   </button>

@@ -20,11 +20,14 @@ import { StoreService } from './services/store.service';
   selector: 'nf-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  public isShowingLoadIndicator: boolean;
+  public isShowingLoadModuleIndicator = false;
+  public isShowingPendingIndicator = false;
+
   private currPendingVisibilityStatus: Subscription;
+  private currRouterStatus: Subscription;
   private storeInitialSubscription: Subscription;
 
   constructor(
@@ -35,28 +38,30 @@ export class AppComponent implements OnInit {
   ) {
     let asyncLoadCount = 0;
 
-    router.events.subscribe((event: RouterEvent): void => {
-      if (event instanceof RouteConfigLoadStart) {
-        asyncLoadCount++;
-      } else if (event instanceof RouteConfigLoadEnd) {
-        asyncLoadCount--;
-      }
+    this.currRouterStatus = router.events.subscribe(
+      (event: RouterEvent): void => {
+        if (event instanceof RouteConfigLoadStart) {
+          asyncLoadCount++;
+        } else if (event instanceof RouteConfigLoadEnd) {
+          asyncLoadCount--;
+        }
 
-      if (
-        event instanceof RouteConfigLoadStart ||
-        event instanceof RouteConfigLoadEnd
-      ) {
-        this.isShowingLoadIndicator = !!asyncLoadCount;
-        this.ref.markForCheck();
+        if (
+          event instanceof RouteConfigLoadStart ||
+          event instanceof RouteConfigLoadEnd
+        ) {
+          this.isShowingLoadModuleIndicator = !!asyncLoadCount;
+          this.ref.markForCheck();
+        }
       }
-    });
+    );
   }
 
   ngOnInit() {
     this.storeInitialSubscription = this.storeService.store$.subscribe();
     this.currPendingVisibilityStatus = this.appState.pendingVisibility$.subscribe(
       res => {
-        this.isShowingLoadIndicator = res;
+        this.isShowingPendingIndicator = res;
         this.ref.markForCheck();
       }
     );
