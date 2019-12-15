@@ -25,6 +25,8 @@ import { CommentComponent } from './components/comment.component';
     StatusComponent,
     ChildCounterComponent,
     CommentComponent,
+    RussianLettersMaskPipe,
+    OnlyDigitsMaskPipe,
   ],
   imports: [
     CommonModule,

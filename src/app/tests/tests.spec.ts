@@ -17,6 +17,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('FormComponent', () => {
   let component: FormComponent;
@@ -43,6 +44,7 @@ describe('FormComponent', () => {
         TextMaskModule,
         RouterTestingModule,
         HttpClientModule,
+        BrowserAnimationsModule,
       ],
       providers: [RussianLettersMaskPipe, OnlyDigitsMaskPipe],
     });
@@ -60,8 +62,8 @@ describe('FormComponent', () => {
   });
 
   it('should hide status component when underage', () => {
-    component.ngOnInit();
     component.form.patchValue({ date: new Date(2011, 0, 1, 0, 0, 0, 0) });
+    fixture.detectChanges();
     const nfStatusElement = debug.query(By.css('nf-status'));
 
     expect(nfStatusElement).toBeNull();
@@ -69,9 +71,10 @@ describe('FormComponent', () => {
 
   it('should show status component when underage', () => {
     component.form.patchValue({ date: new Date(1900, 0, 1, 0, 0, 0, 0) });
+    fixture.detectChanges();
     const nfStatusElement = debug.query(By.css('nf-status'));
 
-    expect(nfStatusElement).toBeDefined();
+    expect(nfStatusElement).not.toBeNull();
   });
 
   it('should refresh status value when underage was changed', () => {
