@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BaseControlComponent } from './base-control.component';
-import { MaritalStatus, GENDER } from '@nf-shared/models';
 
 @Component({
   selector: 'nf-status',
@@ -20,13 +19,6 @@ import { MaritalStatus, GENDER } from '@nf-shared/models';
   styles: ['.mat-form-field { width: 100%; margin: 5px 0; }'],
 })
 export class StatusComponent extends BaseControlComponent {
-  maritalStatus: MaritalStatus[] = [
-    {
-      value: 'женат',
-      gender: GENDER.M,
-    },
-    { value: 'замужем', gender: GENDER.W },
-    { value: 'в разводе', gender: null },
-    { value: 'нет', gender: null },
-  ];
+  @Input()
+  maritalStatus;
 }

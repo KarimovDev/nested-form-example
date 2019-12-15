@@ -7,6 +7,7 @@ import { StoreService } from '../services/store.service';
 import { Router } from '@angular/router';
 import { HttpService } from 'app/services/http.service';
 import { calculateAge, maskCallback } from '@nf-shared/helpers';
+import { MaritalStatus, GENDER } from '@nf-shared/models';
 
 @AutoUnsubscribe()
 @Component({
@@ -15,17 +16,29 @@ import { calculateAge, maskCallback } from '@nf-shared/helpers';
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit {
-  public form: FormGroup;
-  public isDisabledSubmit = false;
-  public showStatusControl = false;
   private formSubscription: Subscription;
   private nameSubscription: Subscription;
   private commentSubscription: Subscription;
   private childCounterSubscription: Subscription;
   private dateSubscription: Subscription;
+  private genderSubscription: Subscription;
   private httpSubscription: Subscription;
   private delayButtonSubscription: Subscription;
   private wrongSubmitCounter = 0;
+  private readonly maritalStatus: MaritalStatus[] = [
+    {
+      value: 'женат',
+      gender: GENDER.M,
+    },
+    { value: 'замужем', gender: GENDER.W },
+    { value: 'в разводе', gender: null },
+    { value: 'нет', gender: null },
+  ];
+
+  public form: FormGroup;
+  public isDisabledSubmit = false;
+  public showStatusControl = false;
+  public filteredMaritalStatus = [...this.maritalStatus];
 
   constructor(
     private russianLettersMask: RussianLettersMaskPipe,
@@ -77,6 +90,14 @@ export class FormComponent implements OnInit {
           this.form.patchValue({ status: '' });
           this.showStatusControl = false;
         }
+      }
+    );
+
+    this.genderSubscription = this.form.controls.gender.valueChanges.subscribe(
+      gender => {
+        this.filteredMaritalStatus = this.maritalStatus.filter(
+          el => el.gender === gender || !el.gender
+        );
       }
     );
   }

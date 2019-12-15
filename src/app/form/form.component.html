@@ -2,7 +2,11 @@
   <nf-name [form]="form"></nf-name>
   <nf-gender [form]="form"></nf-gender>
   <nf-date [form]="form"></nf-date>
-  <nf-status *ngIf="showStatusControl" [form]="form"></nf-status>
+  <nf-status
+    *ngIf="showStatusControl"
+    [form]="form"
+    [maritalStatus]="filteredMaritalStatus"
+  ></nf-status>
   <nf-child-counter [form]="form"></nf-child-counter>
   <nf-email [form]="form"></nf-email>
   <nf-comment [form]="form"></nf-comment>
