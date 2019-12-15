@@ -63,9 +63,9 @@ export class FormComponent implements OnInit {
         NestedFormValidators.isNameFieldCorrect,
       ]),
       gender: new FormControl('', Validators.required),
-      date: new FormControl('', Validators.required),
+      date: new FormControl(null, Validators.required),
       status: new FormControl('', Validators.required),
-      childCounter: new FormControl('', [
+      childCounter: new FormControl(null, [
         Validators.required,
         Validators.min(0),
         Validators.max(100),
