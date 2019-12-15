@@ -7,12 +7,12 @@ import { BaseControlComponent } from './base-control.component';
     <mat-form-field [formGroup]="form">
       <input
         matInput
+        [nfInteractiveNumber]="form"
         type="number"
         placeholder="Количество детей"
         min="0"
         max="100"
         formControlName="childCounter"
-        (keypress)="keyPressed($event)"
         required
       />
       <mat-error *ngIf="form.controls.childCounter.hasError('required')">
@@ -30,24 +30,4 @@ import { BaseControlComponent } from './base-control.component';
   `,
   styles: ['.mat-form-field { width: 100%; margin: 5px 0; }'],
 })
-export class ChildCounterComponent extends BaseControlComponent {
-  public keyPressed(event: KeyboardEvent) {
-    const currentValue = parseInt(this.form.controls.childCounter.value, 10);
-    if (isNaN(currentValue)) {
-      event.preventDefault();
-      this.form.patchValue({
-        childCounter: 0,
-      });
-    } else if (event.key === '+') {
-      event.preventDefault();
-      this.form.patchValue({
-        childCounter: currentValue + 1,
-      });
-    } else if (event.key === '-') {
-      event.preventDefault();
-      this.form.patchValue({
-        childCounter: currentValue - 1,
-      });
-    }
-  }
-}
+export class ChildCounterComponent extends BaseControlComponent {}

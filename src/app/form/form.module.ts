@@ -14,6 +14,7 @@ import { DateComponent } from './components/date.component';
 import { StatusComponent } from './components/status.component';
 import { ChildCounterComponent } from './components/child-counter.component';
 import { CommentComponent } from './components/comment.component';
+import { InteractiveNumberDirective } from '@nf-shared/directives';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { CommentComponent } from './components/comment.component';
     CommentComponent,
     RussianLettersMaskPipe,
     OnlyDigitsMaskPipe,
+    InteractiveNumberDirective,
   ],
   imports: [
     CommonModule,

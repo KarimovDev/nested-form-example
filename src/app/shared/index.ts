@@ -7,6 +7,7 @@ import * as models from './models';
 import * as helpers from './helpers';
 import * as errors from './errors-descriptions';
 import * as validators from './validators';
+import * as directives from './directives';
 
 export {
   masks,
@@ -18,4 +19,5 @@ export {
   helpers,
   errors,
   validators,
+  directives,
 };
