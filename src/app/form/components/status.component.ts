@@ -12,7 +12,7 @@ import { BaseControlComponent } from './base-control.component';
         </mat-option>
       </mat-select>
       <mat-error *ngIf="form.controls.status.hasError('required')">
-        You must pick a value
+        {{ errors.REQUIRED }}
       </mat-error>
     </mat-form-field>
   `,

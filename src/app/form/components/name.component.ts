@@ -5,9 +5,9 @@ import { BaseControlComponent } from './base-control.component';
   selector: 'nf-name',
   template: `
     <mat-form-field [formGroup]="form">
-      <input matInput placeholder="Name" formControlName="name" required />
+      <input matInput placeholder="ФИО" formControlName="name" required />
       <mat-error *ngIf="form.controls.name.hasError('required')">
-        You must enter a value
+        {{ errors.REQUIRED }}
       </mat-error>
     </mat-form-field>
   `,

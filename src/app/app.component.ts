@@ -24,7 +24,6 @@ import { StoreService } from './services/store.service';
 })
 export class AppComponent implements OnInit {
   public isShowingLoadIndicator: boolean;
-  public isShowingBlockIndicator: boolean;
   private currPendingVisibilityStatus: Subscription;
   private storeInitialSubscription: Subscription;
 

@@ -8,14 +8,14 @@ import { BaseControlComponent } from './base-control.component';
       <input
         matInput
         [matDatepicker]="picker"
-        placeholder="Choose a date"
+        placeholder="Дата рождения"
         formControlName="date"
         required
       />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="form.controls.date.hasError('required')">
-        You must pick a value
+        {{ errors.REQUIRED }}
       </mat-error>
     </mat-form-field>
   `,

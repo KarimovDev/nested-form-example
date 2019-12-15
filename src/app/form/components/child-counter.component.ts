@@ -8,14 +8,14 @@ import { BaseControlComponent } from './base-control.component';
       <input
         matInput
         type="number"
-        placeholder="Child"
+        placeholder="Количество детей"
         min="0"
         max="100"
         formControlName="childCounter"
         required
       />
       <mat-error *ngIf="form.controls.childCounter.hasError('required')">
-        You must enter a value
+        {{ errors.REQUIRED }}
       </mat-error>
       <mat-error *ngIf="form.controls.childCounter.hasError('min')">
         Нельзя указать меньше

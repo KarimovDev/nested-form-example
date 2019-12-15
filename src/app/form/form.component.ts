@@ -34,6 +34,7 @@ export class FormComponent implements OnInit {
     { value: 'в разводе', gender: null },
     { value: 'нет', gender: null },
   ];
+  private bindedMaskCallback = maskCallback.bind(this);
 
   public form: FormGroup;
   public isDisabledSubmit = false;
@@ -67,15 +68,15 @@ export class FormComponent implements OnInit {
     });
 
     this.nameSubscription = this.form.controls.name.valueChanges.subscribe(
-      maskCallback('name', 'russianLettersMask')
+      this.bindedMaskCallback('name', 'russianLettersMask')
     );
 
     this.commentSubscription = this.form.controls.comment.valueChanges.subscribe(
-      maskCallback('comment', 'russianLettersMask')
+      this.bindedMaskCallback('comment', 'russianLettersMask')
     );
 
     this.childCounterSubscription = this.form.controls.childCounter.valueChanges.subscribe(
-      maskCallback('childCounter', 'onlyDigitsMask')
+      this.bindedMaskCallback('childCounter', 'onlyDigitsMask')
     );
 
     this.dateSubscription = this.form.controls.date.valueChanges.subscribe(
@@ -102,15 +103,15 @@ export class FormComponent implements OnInit {
     );
   }
 
-  startDelayUndisabling() {
+  startDelayUndisabling(ms: number) {
     this.isDisabledSubmit = true;
-    this.delayButtonSubscription = timer(1000).subscribe(
+    this.delayButtonSubscription = timer(ms).subscribe(
       result => (this.isDisabledSubmit = false)
     );
   }
 
   submit() {
-    this.startDelayUndisabling();
+    this.startDelayUndisabling(10000);
 
     this.form.markAllAsTouched();
 

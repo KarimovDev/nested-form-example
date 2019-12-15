@@ -6,7 +6,7 @@ import { GENDER } from '@nf-shared/models';
   selector: 'nf-gender',
   template: `
     <ng-container [formGroup]="form" required>
-      <label id="radio-group-label">Pick your gender *</label>
+      <label id="radio-group-label">Пол *</label>
       <mat-radio-group
         aria-labelledby="radio-group-label"
         class="radio-group"
@@ -26,7 +26,7 @@ import { GENDER } from '@nf-shared/models';
           form.controls.gender.touched
         "
       >
-        You must pick a value
+        {{ errors.REQUIRED }}
       </mat-error>
     </ng-container>
   `,

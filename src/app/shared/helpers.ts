@@ -8,7 +8,7 @@ export const calculateAge = birthday => {
   }
 };
 
-export const maskCallback = (fieldName: string, maskName: string) => {
+export function maskCallback(fieldName: string, maskName: string) {
   return value => {
     const maskedValue = this[maskName].transform(value);
     if (value !== maskedValue) {
@@ -18,4 +18,4 @@ export const maskCallback = (fieldName: string, maskName: string) => {
       this.form.patchValue(valueObject);
     }
   };
-};
+}
