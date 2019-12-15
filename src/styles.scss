@@ -149,27 +149,6 @@ body {
   height: 100%;
 }
 body {
+  margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
-
-.title {
-  font-size: 22px;
-  margin: 15px 0;
-  padding: 5px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 40px;
-}
-
-.text {
-  margin: 15px 0;
-  font-size: 18px;
-}
-
-.right-align-button {
-  float: right;
-}
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

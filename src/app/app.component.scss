@@ -1,11 +1,6 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-  border-radius: 5px;
   padding: 15px 35px;
   margin: 100px 20%;
-  z-index: 10;
 }
 
 @keyframes load-indicator-animation {
@@ -20,14 +15,14 @@
 
 .load-indicator {
   opacity: 0;
-  animation-delay: 0ms;
+  animation-delay: 300ms;
   animation-duration: 0ms;
   animation-fill-mode: both;
   animation-name: load-indicator-animation;
   position: fixed;
   top: 50%;
   left: 50%;
-  z-index: 500000;
+  z-index: 1000;
 }
 
 .loader-overlay {
@@ -37,5 +32,5 @@
   top: 0;
   left: 0;
   opacity: 1;
-  z-index: 500000;
+  z-index: 1000;
 }

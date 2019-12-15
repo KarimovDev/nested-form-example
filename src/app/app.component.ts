@@ -1,8 +1,18 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnInit,
+} from '@angular/core';
 import { AppStateService } from './services/app-state.service';
-import { Router, RouterEvent, RouteConfigLoadStart, RouteConfigLoadEnd } from '@angular/router';
+import {
+  Router,
+  RouterEvent,
+  RouteConfigLoadStart,
+  RouteConfigLoadEnd,
+} from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AutoUnsubscribe } from './shared/decorators';
+import { AutoUnsubscribe } from '@nf-shared/decorators';
 
 @AutoUnsubscribe()
 @Component({

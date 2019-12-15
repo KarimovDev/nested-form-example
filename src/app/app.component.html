@@ -1,6 +1,9 @@
 <div class="container">
   <div *ngIf="isShowingBlockIndicator" class="loader-overlay"></div>
-  <div *ngIf="isShowingLoadIndicator || isShowingBlockIndicator" class="load-indicator">
+  <div
+    *ngIf="isShowingLoadIndicator || isShowingBlockIndicator"
+    class="load-indicator"
+  >
     <mat-spinner [diameter]="50"></mat-spinner>
   </div>
   <router-outlet></router-outlet>
