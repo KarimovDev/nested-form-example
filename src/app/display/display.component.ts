@@ -23,4 +23,8 @@ export class DisplayComponent implements OnInit {
       this.keys = Object.keys(data);
     });
   }
+
+  isDate(value: any) {
+    return value instanceof Date;
+  }
 }
