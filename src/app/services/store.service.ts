@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { scan, startWith, shareReplay } from 'rxjs/operators';
-
-interface Store extends Observable<any> {
-  dispatch?: any;
-}
+import { Store } from '@nf-shared/models';
 
 @Injectable({
   providedIn: 'root',
@@ -26,11 +23,13 @@ export class StoreService {
   private createStore(rootReducer) {
     const subj = new Subject();
 
-    const store$: Store = subj.pipe(
-      startWith({ type: '__INIT__' }),
-      scan(rootReducer, undefined),
-      shareReplay(1)
-    );
+    const store$: Store = subj
+      .asObservable()
+      .pipe(
+        startWith({ type: '__INIT__' }),
+        scan(rootReducer, undefined),
+        shareReplay(1)
+      );
 
     store$.dispatch = action => subj.next(action);
 
@@ -38,10 +37,6 @@ export class StoreService {
   }
 
   constructor() {
-    this.store$ = this.createStore(this.reducer);
+    this.store$ = this.createStore(this.reducer.bind(this));
   }
 }
-
-// document.getElementById('add').addEventListener('click', () => {
-//   store$.dispatch({type: 'ADD', payload: 10})
-// })

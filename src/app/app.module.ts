@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UiKitModule } from '@nf-shared/ui-kit.module';
 import { NotFoundComponent } from '@nf-shared/not-found.component';
 import { environment } from '../environments/environment';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { PendingInterceptor } from './interceptors/pending.interceptor';
 import { HttpMockRequestInterceptor } from './interceptors/api-mock.interceptor';
 import { HttpRequestInterceptor } from './interceptors/api.interceptor';
@@ -24,6 +24,7 @@ export const isMock = environment.mock;
     UiKitModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
   ],
   providers: [
     {

@@ -2,12 +2,17 @@
   <nf-name [form]="form"></nf-name>
   <nf-gender [form]="form"></nf-gender>
   <nf-date [form]="form"></nf-date>
-  <nf-status [form]="form"></nf-status>
+  <nf-status *ngIf="showStatusControl" [form]="form"></nf-status>
   <nf-child-counter [form]="form"></nf-child-counter>
   <nf-email [form]="form"></nf-email>
   <nf-comment [form]="form"></nf-comment>
 
-  <button mat-stroked-button class="btn" type="submit" [disabled]="">
+  <button
+    mat-stroked-button
+    class="btn"
+    type="submit"
+    [disabled]="isDisabledSubmit"
+  >
     Отправить
   </button>
 </form>

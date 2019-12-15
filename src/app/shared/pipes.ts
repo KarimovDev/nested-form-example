@@ -18,15 +18,15 @@ export class OnlyDigitsMaskPipe implements PipeTransform {
   value: number;
 
   transform(value: number, args?: any): number {
-    const newValue =
-      value !== null ? Number(value.toString().replace(/[^0-9]+/g, '')) : 0;
+    // const newValue =
+    //   value !== null ? Number(value.toString().replace(/[^0-9]+/g, '')) : 0;
 
-    if (newValue > 100) {
+    if (value > 100) {
       return 100;
-    } else if (newValue < 0) {
+    } else if (value < 0) {
       return 0;
     } else {
-      return newValue;
+      return value;
     }
   }
 }

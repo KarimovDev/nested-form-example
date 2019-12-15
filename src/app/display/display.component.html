@@ -1,1 +1,3 @@
-<p>display works!</p>
+<ng-container *ngFor="let key of keys">
+  <p>{{ key }}: {{ data[key] }}</p>
+</ng-container>

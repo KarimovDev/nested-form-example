@@ -13,23 +13,26 @@ import {
 } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AutoUnsubscribe } from '@nf-shared/decorators';
+import { StoreService } from './services/store.service';
 
 @AutoUnsubscribe()
 @Component({
   selector: 'nf-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AppComponent implements OnInit {
   public isShowingLoadIndicator: boolean;
   public isShowingBlockIndicator: boolean;
-  private currPendingVisibilityStatus$: Subscription;
+  private currPendingVisibilityStatus: Subscription;
+  private storeInitialSubscription: Subscription;
 
   constructor(
     private appState: AppStateService,
     private ref: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private storeService: StoreService
   ) {
     let asyncLoadCount = 0;
 
@@ -51,7 +54,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currPendingVisibilityStatus$ = this.appState.pendingVisibility$.subscribe(
+    this.storeInitialSubscription = this.storeService.store$.subscribe();
+    this.currPendingVisibilityStatus = this.appState.pendingVisibility$.subscribe(
       res => {
         this.isShowingLoadIndicator = res;
         this.ref.markForCheck();

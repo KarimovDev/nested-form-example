@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 export type InputMask = InputMaskOptions | maskFunction | (string | RegExp)[];
 
 interface InputMaskOptions {
@@ -18,4 +20,20 @@ export interface MaritalStatus {
 export enum GENDER {
   M = 'мужчина',
   W = 'женщина',
+}
+
+export interface Store extends Observable<StoreData> {
+  dispatch?: nextFunction;
+}
+
+type nextFunction = (value?: any) => void;
+
+export interface StoreData {
+  name: string;
+  gender: string;
+  date: Date;
+  status: string;
+  childCounter: number;
+  email: string;
+  comment: string;
 }

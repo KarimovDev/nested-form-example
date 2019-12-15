@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RussianLettersMaskPipe, OnlyDigitsMaskPipe } from '@nf-shared/pipes';
 import { AutoUnsubscribe } from '@nf-shared/decorators';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
+import { StoreService } from '../services/store.service';
+import { Router } from '@angular/router';
+import { HttpService } from 'app/services/http.service';
+import { calculateAge, maskCallback } from '@nf-shared/helpers';
 
 @AutoUnsubscribe()
 @Component({
@@ -11,15 +15,24 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit {
-  form: FormGroup;
-  formSubscription: Subscription;
-  nameSubscription: Subscription;
-  commentSubscription: Subscription;
-  childCounterSubscription: Subscription;
+  public form: FormGroup;
+  public isDisabledSubmit = false;
+  public showStatusControl = false;
+  private formSubscription: Subscription;
+  private nameSubscription: Subscription;
+  private commentSubscription: Subscription;
+  private childCounterSubscription: Subscription;
+  private dateSubscription: Subscription;
+  private httpSubscription: Subscription;
+  private delayButtonSubscription: Subscription;
+  private wrongSubmitCounter = 0;
 
   constructor(
     private russianLettersMask: RussianLettersMaskPipe,
-    private onlyDigitsMask: OnlyDigitsMaskPipe
+    private onlyDigitsMask: OnlyDigitsMaskPipe,
+    private storeService: StoreService,
+    private router: Router,
+    private http: HttpService
   ) {}
 
   ngOnInit() {
@@ -41,54 +54,63 @@ export class FormComponent implements OnInit {
     });
 
     this.nameSubscription = this.form.controls.name.valueChanges.subscribe(
-      value => {
-        const maskedValue = this.russianLettersMask.transform(value);
-        if (value !== maskedValue) {
-          this.form.patchValue({ name: maskedValue });
-        }
-      }
+      maskCallback('name', 'russianLettersMask')
     );
 
     this.commentSubscription = this.form.controls.comment.valueChanges.subscribe(
-      value => {
-        const maskedValue = this.russianLettersMask.transform(value);
-        if (value !== maskedValue) {
-          this.form.patchValue({ comment: maskedValue });
-        }
-      }
+      maskCallback('comment', 'russianLettersMask')
     );
 
     this.childCounterSubscription = this.form.controls.childCounter.valueChanges.subscribe(
-      value => {
-        const maskedValue = this.onlyDigitsMask.transform(value);
-        if (value !== maskedValue) {
-          this.form.patchValue({ childCounter: maskedValue });
+      maskCallback('childCounter', 'onlyDigitsMask')
+    );
+
+    this.dateSubscription = this.form.controls.date.valueChanges.subscribe(
+      date => {
+        const age = calculateAge(date);
+
+        if (age >= 18) {
+          this.form.controls.status.setValidators(Validators.required);
+          this.showStatusControl = true;
+        } else {
+          this.form.controls.status.clearValidators();
+          this.form.patchValue({ status: '' });
+          this.showStatusControl = false;
         }
       }
     );
   }
 
-  // private maskCallback(fieldName: string, maskName: string) {
-  //   return value => {
-  //     const maskedValue = this[maskName].transform(value);
-  //       if (value !== maskedValue) {
-  //         this.form.patchValue({ fieldName: maskedValue });
-  //       }
-  //   }
-  // }
+  startDelayUndisabling() {
+    this.isDisabledSubmit = true;
+    this.delayButtonSubscription = timer(1000).subscribe(
+      result => (this.isDisabledSubmit = false)
+    );
+  }
 
   submit() {
-    this.form.markAllAsTouched();
-    // Object.keys(this.form.controls).forEach(field => {
-    //   const control = this.form.get(field);
-    //   console.log(control);
-    //   control.markAsTouched({ onlySelf: true });
-    // });
-    if (this.form.valid && !this.form.pending) {
-      const formData = { ...this.form.value };
-      console.log('Form Data:', formData);
+    this.startDelayUndisabling();
 
+    this.form.markAllAsTouched();
+
+    this.wrongSubmitCounter++;
+    if (this.wrongSubmitCounter >= 3) {
+      this.wrongSubmitCounter = 0;
       this.form.reset();
+    }
+
+    if (this.form.valid && !this.form.pending) {
+      this.wrongSubmitCounter = 0;
+      const data = { ...this.form.value };
+
+      this.httpSubscription = this.http.postForm(data).subscribe(
+        res => {
+          this.storeService.store$.dispatch({ type: 'ADD', data });
+          this.form.reset();
+          this.router.navigate(['display']);
+        },
+        error => console.log(error)
+      );
     }
   }
 }
