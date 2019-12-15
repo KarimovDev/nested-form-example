@@ -32,15 +32,21 @@ import { BaseControlComponent } from './base-control.component';
 })
 export class ChildCounterComponent extends BaseControlComponent {
   public keyPressed(event: KeyboardEvent) {
-    if (event.key === '+') {
+    const currentValue = parseInt(this.form.controls.childCounter.value, 10);
+    if (isNaN(currentValue)) {
       event.preventDefault();
       this.form.patchValue({
-        childCounter: this.form.controls.childCounter.value + 1,
+        childCounter: 0,
+      });
+    } else if (event.key === '+') {
+      event.preventDefault();
+      this.form.patchValue({
+        childCounter: currentValue + 1,
       });
     } else if (event.key === '-') {
       event.preventDefault();
       this.form.patchValue({
-        childCounter: this.form.controls.childCounter.value - 1,
+        childCounter: currentValue - 1,
       });
     }
   }
