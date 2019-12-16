@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { scan, startWith, shareReplay } from 'rxjs/operators';
 import { Store } from '@nf-shared/models';
 
@@ -21,15 +21,11 @@ export class StoreService {
   }
 
   private createStore(rootReducer) {
-    const subj = new Subject();
+    const subj = new BehaviorSubject({ type: '__INIT__' });
 
     const store$: Store = subj
       .asObservable()
-      .pipe(
-        startWith({ type: '__INIT__' }),
-        scan(rootReducer, undefined),
-        shareReplay(1)
-      );
+      .pipe(scan(rootReducer, undefined), shareReplay(1));
 
     store$.dispatch = action => subj.next(action);
 
